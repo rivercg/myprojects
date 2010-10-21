@@ -5,12 +5,19 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    # admin/doc 
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # admin
+    (r'^admin/', include(admin.site.urls)),
+
+    # candidates and jobs
     (r'^candidates/', include('candidates.urls')),
     (r'^jobs/', include('jobs.urls')),
     
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # accounts
+    (r'^login/$', 'django.contrib.auth.views.login'),
+    (r'^accounts/', include('accounts.urls')),
 
-    # Uncomment the next line to enable the admin:
-    (r'^admin/', include(admin.site.urls)),
+    # all the others to interview
+    (r'', include('interviews.urls')),
 )

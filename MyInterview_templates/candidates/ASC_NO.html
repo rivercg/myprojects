@@ -1,0 +1,18 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+     <a href="/">{% trans "Home" %}</a> &rsaquo;
+     {{ fea_desc }}
+</div>
+{% endblock %}
+
+{% block content %}
+<p>Dear {{ candidate.first_name }}:</p>
+
+<p>You have canceled the interview of the <a href={{ pos_url }}>{{ pos.title }}</a> position in our company. So your appliction to it will be closed.</p>
+
+<p>We regret that and wish you the best.</p>
+{% endblock %}
+

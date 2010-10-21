@@ -1,0 +1,14 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+{% if latest_position_list %}
+    <ul>
+    {% for p in latest_position_list %}
+        <li><a href="/jobs/{{ p.id }}/">{{ p.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No jobs are available.</p>
+{% endif %}
+{% endblock %}

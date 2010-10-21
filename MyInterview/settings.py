@@ -96,5 +96,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'jobs',
     'candidates',
+    'accounts',
     'interviews',
 )

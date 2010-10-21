@@ -1,11 +1,5 @@
 from django.contrib import admin
-from models import Message, VirtualUser, IvRecord
-
-
-class VirtualUserAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user_name', 'role', 'username_pk', 'disp_name', 'email', 'last_login')
-    list_filter = ['role']
-    search_fields = ['role']
+from models import IvRecord, Message
 
 class IvRecordAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -24,7 +18,6 @@ class MessageAdmin(admin.ModelAdmin):
     search_fields = ['text', 'iv_record', 'send_from']
     date_hierarchy = 'pub_date'
 
-admin.site.register(VirtualUser, VirtualUserAdmin)
 admin.site.register(IvRecord, IvRecordAdmin)
 admin.site.register(Message, MessageAdmin)
 

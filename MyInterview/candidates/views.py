@@ -3,13 +3,15 @@ from django.http import Http404
 from models import *
 from interviews.models import IvRecord
 from jobs.views import get_job_url
+from django.contrib.auth.decorators import login_required
 
 class TemplateDoesNotExist(Exception):
     pass
 
+@login_required
 def index(request):
     latest_candidate_list = Candidate.objects.all().order_by('-create_date')[:20]
-    return render_to_response('candidates/index.html', {'latest_candidate_list': latest_candidate_list})
+    return render_to_response('candidates/index.html', {'user': request.user, 'title': 'candidates', 'latest_candidate_list': latest_candidate_list})
 
 def candidiate_to_ivrecord(candidate):
     if isinstance(candidate, Candidate):
@@ -23,11 +25,12 @@ def candidiate_to_job(candidate):
         return ivr.position
     else:
         return None
-    
+
+@login_required    
 def detail(request, candidate_id):
     c = Candidate.objects.get(pk=candidate_id)
     p = candidiate_to_job(c)
-    return render_to_response('candidates/detail.html', {'candidate': c, 'pos': p})
+    return render_to_response('candidates/detail.html', {'user': request.user, 'title': c.name(), 'candidate': c, 'pos': p})
 
 CF_TEMPLATE_FIELD_INDEX = 0 
 CF_TEMPLATE_FIELD_INIT = 1 
@@ -89,6 +92,7 @@ def _do_featurelink(request, feature, digest):
     # get relative url for yes and no
     ack_urls = _get_featurelink_ackurls(feature, digest) 
     flink_vector.update(ack_urls)
+    flink_vector['user'] = request.user
     return render_to_response(flink_vector['template'], flink_vector)
 
 def featurelink(request, feature, digest):
@@ -105,6 +109,7 @@ def _do_ack_featurelink(request, feature, digest, ack):
     flink_vector = get_featurelink_vector(feature, digest, ack)
     # update the status
     flink_vector['link_obj'].update_status(ack)
+    flink_vector['user'] = request.user
     return render_to_response(flink_vector['template'], flink_vector)
 
 def ack_featurelink(request, feature, digest, ack):
