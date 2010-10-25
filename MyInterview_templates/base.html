@@ -17,68 +17,67 @@
 <!-- Container -->
 <div id="container">
 
-    {% if not is_popup %}
-    <!-- Header -->
-    <div id="header">
-        <div id="branding">
-        {% block branding %}{% endblock %}
-        </div>
-        <div id="user-tools">
-        {% if user.is_active %}
-            {% trans 'Welcome,' %}
-            <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
-            {% block userlinks %}
-                {% url django.contrib.auth.views.password_change as password_change_url %}
-                {% if password_change_url %}
-                    <a href="{{ password_change_url }}">
-                {% else %}
-                    <a href="{{ root_path }}password_change/">
-                {% endif %}
-                {% trans 'Change password' %}</a> /
-                {% url django.contrib.auth.views.logout as logout_url %}
-                {% if logout_url %}
-                    <a href="{{ logout_url }}">
-                {% else %}
-                    <a href="{{ root_path }}logout/">
-                {% endif %}
-                {% trans 'Log out' %}</a>
-            {% endblock %}
+  {% if not is_popup %}
+  <!-- Header -->
+  <div id="header">
+    <div id="branding">
+    {% block branding %}{% endblock %}
+    </div>
+    <div id="user-tools">
+    {% if user.is_active %}
+      {% trans 'Welcome,' %}
+      <strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
+      {% block userlinks %}
+        {% url django.contrib.auth.views.password_change as password_change_url %}
+        {% if password_change_url %}
+          <a href="{{ password_change_url }}">
         {% else %}
-            {% block anonymouslinks %}
-                {% url django.contrib.auth.views.login as login_url %}
-                {% if login_url %}
-                    <a href="{{ login_url }}/?next={{ root_path }}">
-                		{% trans 'Log in' %}</a>
-                {% endif %}
-            {% endblock %}
+          <a href="{{ root_path }}password_change/">
         {% endif %}
-      	</div>
-        {% block nav-global %}{% endblock %}
-    </div>
-    <!-- END Header -->
-    {% block breadcrumbs %}<div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}</div>{% endblock %}
+        {% trans 'Change password' %}</a> /
+        {% url django.contrib.auth.views.logout as logout_url %}
+        {% if logout_url %}
+          <a href="{{ logout_url }}">
+        {% else %}
+          <a href="{{ root_path }}logout/">
+        {% endif %}
+        {% trans 'Log out' %}</a>
+      {% endblock %}
+    {% else %}
+      {% block anonymouslinks %}
+        {% url django.contrib.auth.views.login as login_url %}
+        {% if login_url %}
+          <a href="{{ login_url }}/?next={{ root_path }}">{% trans 'Log in' %}</a>
+        {% endif %}
+      {% endblock %}
     {% endif %}
+      </div>
+    {% block nav-global %}{% endblock %}
+  </div>
+  <!-- END Header -->
+  {% block breadcrumbs %}<div class="breadcrumbs"><a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}</div>{% endblock %}
+  {% endif %}
 
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    		{% endfor %}</ul>
-        {% endif %}
+  {% if messages %}
+    <ul class="messagelist">{% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}</ul>
+  {% endif %}
 
-    <!-- Content -->
-    <div id="content" class="{% block coltype %}colM{% endblock %}">
-        {% block pretitle %}{% endblock %}
-        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-        {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
-        {% endblock %}
-        {% block sidebar %}{% endblock %}
-        <br class="clear" />
-    </div>
-    <!-- END Content -->
+  <!-- Content -->
+  <div id="content" class="{% block coltype %}colM{% endblock %}">
+    {% block pretitle %}{% endblock %}
+    {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+    {% block content %}
+    {% block object-tools %}{% endblock %}
+    {{ content }}
+    {% endblock %}
+    {% block sidebar %}{% endblock %}
+    <br class="clear" />
+  </div>
+  <!-- END Content -->
 
-    {% block footer %}<div id="footer"></div>{% endblock %}
+  {% block footer %}<div id="footer"></div>{% endblock %}
 </div>
 <!-- END Container -->
 

@@ -1,0 +1,28 @@
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n %}
+
+{% block object-tools %}
+  {% if has_add_permission %}
+    <ul class="object-tools">
+      <li>
+        <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+          {% blocktrans with "record" as name %}Add {{ name }}{% endblocktrans %}
+        </a>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block filters %}
+  <div id="changelist-filter">
+    <h2>{% trans 'Filter' %}</h2>
+    <p>will put filter here</p>
+  </div>
+{% endblock %}
+
+{% block content-list %}
+<div id="index_list">
+  {% include "interviews/active_list.html" %}
+  {% include "interviews/closed_list.html" %}
+</div>
+{% endblock %}

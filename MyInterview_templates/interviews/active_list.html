@@ -1,0 +1,39 @@
+{% load adminmedia admin_list i18n %}
+
+<div id="active_list">
+{% if active_record_list %}
+  <table cellspacing="0" id="result_list" summary="Active records">
+  <caption><a href="active" class="section">{% blocktrans with "Active records" as name %}{{ name }}{% endblocktrans %}</a></caption>
+    <thead>
+      <tr>
+      	<th></th>
+        <th>{% trans 'Candidate' %}</th>
+        <th>{% trans 'Department' %}</th>
+        <th>{% trans 'Position' %}</th>
+        <th>{% trans 'Interview date' %}</th>
+        <th>{% trans 'Status' %}</th>
+        <th>{% trans 'Comment' %}</th>
+        <th>{% trans 'Trac days' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in active_record_list %}
+        <tr>
+        	<td><a href="{{ r.pk }}/change" class="changelink"></td>
+          <td><a href="{{ r.pk }}"> {{ r.candidate }}</a></td>
+          <td>{{ r.position.department }}</td>
+          {% url jobs-root as jobs_root_url %}
+          <td><a href="{{ jobs_root_url }}{{ r.position.pk }}">{{ r.position }}</a></td>
+          <td>{{ r.iv_date }}</td>
+          <td>{{ r.get_status_display }}</td>
+          <td>{{ r.text }}</td>
+          <td>{{ r.trac_days }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="paginator">{{ active_record_list.count }} active records</p>
+{% else %}
+  <p class="paginator">No active records are available</p>
+{% endif %}
+</div>

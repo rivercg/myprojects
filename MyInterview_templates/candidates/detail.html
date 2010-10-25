@@ -1,71 +1,23 @@
-{% extends "base_site.html" %}
-{% load i18n %}
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-     <a href="../../">{% trans "Home" %}</a> &rsaquo;
-     <a href="../">{% trans "candidates" %}</a> &rsaquo;
-     {{ title }}
+  <a href="../../">{% trans "Home" %}</a> &rsaquo;
+  <a href="../">{% trans "Candidates" %}</a> &rsaquo;
+  {{ title }}
 </div>
 {% endblock %}
 
-<h1>{{ candidate.name }}</h1>
+{% block filters %}
+  <div id="changelist-filter">
+    <h2>{% trans 'Action' %}</h2>
+    <p><a href="change">Change resume</a></p>
+  </div>
+{% endblock %}
 
-{% block content %}
-<table>
-	<tbody>
-    <tr>
-    	<td>职位</td>
-    	<td>{{ candidate.name }} </td>
-    </tr>
-    <tr>
-    	<td>性别</td>
-    	<td>{{ candidate.gender }} </td>
-    </tr>
-    <tr>
-    	<td>应聘职位</td>
-    	<td><a href={{ pos_url }}>{{ pos.title }}</a></td>
-    </tr>
-    <tr>
-    	<td>创建日期</td>
-    	<td>{{ candidate.create_date }} </td>
-    </tr>
-    <tr>
-    	<td>&nbsp;</td>
-    	<td></td>
-    </tr>
-    <tr>
-    	<td>出生年月</td>
-    	<td>{{ candidate.birthday }} </td>
-    </tr>
-    <tr>
-    	<td>婚姻状况</td>
-    	<td>{{ candidate.married }} </td>
-    </tr>
-    <tr>
-    	<td>民族</td>
-    	<td></td>
-    </tr>
-    <tr>
-    	<td>户口</td>
-    	<td>{{ candidate.hukou }} </td>
-    </tr>
-    <tr>
-    	<td>家庭住址</td>
-    	<td>{{ candidate.address }} </td>
-    </tr>
-    <tr>
-    	<td>Email</td>
-    	<td>{{ candidate.email }} </td>
-    </tr>
-    <tr>
-    	<td>电话</td>
-    	<td>{{ candidate.phone }} </td>
-    </tr>
-    <tr>
-    	<td>手机</td>
-    	<td>{{ candidate.cell_phone }} </td>
-    </tr>
-  </tbody>
-</table>
+{% block content-list %}
+<div id="content-main">
+  {% include "candidates/resume.html" %}
+</div>
 {% endblock %}

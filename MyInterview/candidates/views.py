@@ -1,9 +1,11 @@
 from django.shortcuts import render_to_response
-from django.http import Http404
+from django.http import HttpResponseRedirect, Http404
 from models import *
 from interviews.models import IvRecord
 from jobs.views import get_job_url
+from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 
 class TemplateDoesNotExist(Exception):
     pass
@@ -30,7 +32,23 @@ def candidiate_to_job(candidate):
 def detail(request, candidate_id):
     c = Candidate.objects.get(pk=candidate_id)
     p = candidiate_to_job(c)
-    return render_to_response('candidates/detail.html', {'user': request.user, 'title': c.name(), 'candidate': c, 'pos': p})
+    return render_to_response('candidates/detail.html', 
+                              {'user': request.user, 
+                               'title': c.name(), 
+                               'candidate': c, 
+                               'pos': p},
+                               context_instance=RequestContext(request))
+
+@login_required    
+def change(request, candidate_id):
+    c = Candidate.objects.get(pk=candidate_id)
+    p = candidiate_to_job(c)
+    return render_to_response('candidates/detail.html', 
+                              {'user': request.user, 
+                               'title': 'Change ' + c.name(), 
+                               'candidate': c, 
+                               'pos': p},
+                               context_instance=RequestContext(request))
 
 CF_TEMPLATE_FIELD_INDEX = 0 
 CF_TEMPLATE_FIELD_INIT = 1 
@@ -75,8 +93,7 @@ def get_featurelink_vector(feature, digest, ack=''):
     # query and append other info
     c = link_obj.candidate        
     p = candidiate_to_job(c)
-    p_url = _make_relative_url(get_job_url(p))
-    flink_vector.update({'link_obj': link_obj, 'candidate': c, 'pos': p, 'pos_url': p_url})
+    flink_vector.update({'link_obj': link_obj, 'candidate': c, 'pos': p,})
     return flink_vector
 
 def get_featurelink_url(feature, digest):
@@ -93,7 +110,13 @@ def _do_featurelink(request, feature, digest):
     ack_urls = _get_featurelink_ackurls(feature, digest) 
     flink_vector.update(ack_urls)
     flink_vector['user'] = request.user
-    return render_to_response(flink_vector['template'], flink_vector)
+    flink_vector.update({
+                 'user': request.user,
+                 'title': flink_vector['candidate'].name(),
+                })     
+    #raise Exception
+    return render_to_response(flink_vector['template'], flink_vector,
+                              context_instance=RequestContext(request))
 
 def featurelink(request, feature, digest):
     #try:
@@ -108,9 +131,13 @@ def _do_ack_featurelink(request, feature, digest, ack):
     # query feature link vector
     flink_vector = get_featurelink_vector(feature, digest, ack)
     # update the status
-    flink_vector['link_obj'].update_status(ack)
-    flink_vector['user'] = request.user
-    return render_to_response(flink_vector['template'], flink_vector)
+    flink_vector['link_obj'].update_status(ack),
+    flink_vector.update({
+                 'user': request.user,
+                 'title': flink_vector['candidate'].name(),
+                }) 
+    return render_to_response(flink_vector['template'], flink_vector,
+                               context_instance=RequestContext(request))
 
 def ack_featurelink(request, feature, digest, ack):
     #try:

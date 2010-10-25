@@ -3,7 +3,7 @@ from models import Position
 
 def index(request):
     latest_position_list = Position.objects.all().order_by('-pub_date')[:20]
-    return render_to_response('jobs/index.html', {'user': request.user, 'title': 'jobs', 'latest_position_list': latest_position_list})
+    return render_to_response('jobs/index.html', {'user': request.user, 'title': 'Job positions', 'latest_position_list': latest_position_list})
     
 def detail(request, pos_id):
     p = Position.objects.get(pk=pos_id)

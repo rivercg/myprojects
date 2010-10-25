@@ -1,0 +1,47 @@
+{% load i18n %}
+<div id="resume_detail">
+  <table class="aligned" id="resume_table" summary="resume of {{candidate.name}}">
+  <caption>Resume</caption>
+    <tbody>
+      <tr>
+        <td class="title">姓名</td>
+        <td>{{ candidate.name }}</td>
+        <td class="title">性别</td>
+        <td>{{ candidate.get_gender_display }}</td>
+      </tr>
+      <tr>
+        <td class="title">应聘职位</td>
+        {% url jobs-root as jobs_root_url %}
+        <td><a href="{{ jobs_root_url }}{{ iv_record.position.pk }}">{{ iv_record.position }}</a></td>
+        <td class="title">创建日期</td>
+        <td>{{ candidate.create_date }}</td>
+      </tr>
+      <tr>
+        <td class="title">出生年月</td>
+        <td>{{ candidate.birthday }}</td>
+        <td class="title">婚姻状况</td>
+        <td>{{ candidate.married }}</td>
+      </tr>
+      <tr>
+        <td class="title">民族</td>
+        <td>&nbsp;</td>
+        <td class="title">户口</td>
+        <td>{{ candidate.hukou }}</td>
+      </tr>
+      <tr>
+        <td class="title">家庭住址</td>
+        <td colspan="3">{{ candidate.address }}</td>
+      </tr>
+      <tr>
+        <td class="title">Email</td>
+        <td colspan="3">{{ candidate.email }}</td>
+      </tr>
+      <tr>
+        <td class="title">电话</td>
+        <td>{{ candidate.phone }}</td>
+        <td class="title">手机</td>
+        <td>{{ candidate.cell_phone }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

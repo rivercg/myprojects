@@ -2,6 +2,7 @@ from django.db import models
 from jobs.models import Position
 from candidates.models import Candidate
 from accounts.models import VirtualUser
+import datetime
 
 MSG_MAX_LEN = 500
 
@@ -11,17 +12,32 @@ class IvRecord(models.Model):
     STATUS_CHOICES = (
         ('Open', 'Record open'),
         ('Closed', 'Record closed'),
+        ('Contacted', 'Contacted and wait acknowledge'),
         ('Scheduled', 'Interview scheduled'),
+        ('Confirmed', 'Interview confirmed'),
         ('Check-in', 'Interview check-in'),
         ('Canceled', 'Interview canceled'),
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    text = models.CharField(max_length=200, blank=True, null=True)
     open_date = models.DateTimeField('date opened')
     close_date = models.DateTimeField('date closed', blank=True, null=True)
+    iv_date = models.DateTimeField('interview date', blank=True, null=True)
+    creator = models.ForeignKey(VirtualUser, related_name='c')
+    follower = models.ForeignKey(VirtualUser, related_name='f')
+    watcher_list = models.ManyToManyField(VirtualUser)
     
     def __unicode__(self):
         return self.candidate.name() + ' => ' + self.position.title
-        #return  self.position 
+        
+    def closed(self):
+        return self.status == 'Closed'
+    
+    def trac_days(self):
+        return (datetime.datetime.now() - self.open_date).days;
+    
+    def watchers(self):
+        return ', '.join([x.user_name() for x in self.watcher_list.all()])
     
 class Message(models.Model):
     iv_record = models.ForeignKey(IvRecord)

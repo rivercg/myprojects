@@ -1,0 +1,107 @@
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n iv_result %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">{% trans "Home" %}</a> &rsaquo;
+      <a href="../">{% trans "Interview records" %}</a> &rsaquo;
+      {{ title|capfirst }}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block object-tools %}
+  {% if not iv_record.closed %}
+    {% if has_close_permission %}
+      <ul class="object-tools">
+        <li>
+          <a href="close/{% if is_popup %}?_popup=1{% endif %}" class="closelink">
+            {% blocktrans with "record" as name %}Close {{ name }}{% endblocktrans %}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+  {% else %}
+    {% if has_reopen_permission %}
+      <ul class="object-tools">
+        <li>
+          <a href="reopen/{% if is_popup %}?_popup=1{% endif %}" class="reopenlink">
+            {% blocktrans with "record" as name %}Reopen {{ name }}{% endblocktrans %}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+
+  {% endif %}
+{% endblock %}
+
+{% block filters %}
+  <div id="changelist-filter">
+    <h2>{% trans 'Contact action' %}</h2>
+    <p><a href="send_contact">Send contact mail</a></p>
+    <h2>{% trans 'Schdule action' %}</h2>
+    <p><a href="schedule/change">Set schedule date</a></p>
+    <p><a href="cancel_schedule">Cancel schedule date</a></p>
+    <p><a href="checkin">Interview check in</a></p>
+    <h2>{% trans 'Resume action' %}</h2>
+    {% url candidates-root as candidates_root_url %}
+    <p><a href="{{ candidates_root_url }}{{ iv_record.candidate.pk }}/change">Change resume</a></p>
+  </div>
+{% endblock %}
+
+{% block content-list %}
+<div id="record_detail">
+{% if iv_record %}
+  <table class="aligned" cellspacing="0" id="result_list" summary={{ title }}>
+    <tbody>
+      <tr>
+        <td class="title">{% trans 'Candidate' %}</td>
+        {% url candidates-root as candidates_root_url %}
+        <td><a href="{{ candidates_root_url }}{{ iv_record.candidate.pk }}"> {{ iv_record.candidate }}</a></td>
+        <td class="title">{% trans 'Position' %}</td>
+        {% url jobs-root as jobs_root_url %}
+        <td><a href="{{ jobs_root_url }}{{ iv_record.position.pk }}">{{ iv_record.position }}</a></td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Interview date' %}</td>
+        <td>{{ iv_record.iv_date }}</td>
+        <td class="title">{% trans 'Status' %}</td>
+        <td>{{ iv_record.get_status_display }}</td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Comment' %}</td>
+        <td colspan="3">{{ iv_record.text }}</td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Date opened' %}</td>
+        <td>{{ iv_record.open_date }}</td>
+        <td class="title">{% trans 'Department' %}</td>
+        <td>{{ iv_record.position.department }}</td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Date Closed' %}</td>
+        <td>{{ iv_record.close_date }}</td>
+        <td class="title">{% trans 'Trac days' %}</td>
+        <td>{{ iv_record.trac_days }}</td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Creator' %}</td>
+        <td>{{ iv_record.creator }}</td>
+        <td class="title">{% trans 'Follower' %}</td>
+        <td>{{ iv_record.follower }}</td>
+      </tr>
+      <tr>
+        <td class="title">{% trans 'Watchers' %}</td>
+        <td colspan="3">{{ iv_record.watchers }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% else %}
+  <p class="paginator aligned">Record is not available</p>
+{% endif %}
+</div>
+{% resume_detail user iv_record %}
+{% message_list user iv_record %}
+{% include "interviews/add_message.html" %}
+{% endblock %}

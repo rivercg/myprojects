@@ -7,7 +7,7 @@ class Position(models.Model):
     closed = models.BooleanField('Job closed') 
     responsibility = models.CharField(max_length=2000)
     requirement = models.CharField(max_length=2000)
-    preference = models.CharField(max_length=1000, null=True)
+    preference = models.CharField(max_length=1000, blank=True, null=True)
     pub_date = models.DateTimeField('Date published')
     close_date = models.DateTimeField('Date closed', blank=True, null=True)
 

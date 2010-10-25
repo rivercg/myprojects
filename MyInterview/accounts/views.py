@@ -1,24 +1,14 @@
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from models import VirtualUser
 
 @login_required
 def index(request):
-    return HttpResponse("login user: %s" % request.user)  
+    # after login, redirect to the interview root
+    return HttpResponseRedirect("/") 
 
-def index2(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            # Redirect to a success page.
-            return HttpResponse("Redirect to a success page")  
-        else:
-            # Return a 'disabled account' error message
-            return HttpResponse("Return a 'disabled account' error message")  
-    else:
-        # Return an 'invalid login' error message.
-        return HttpResponse("Return an 'invalid login' error message.")    
+@login_required
+def users(request):
+    latest_users_list = VirtualUser.objects.all().order_by('-real_user__last_login')[:20]
+    return render_to_response('accounts/users.html', {'user': request.user, 'title': 'users', 'latest_users_list': latest_users_list})

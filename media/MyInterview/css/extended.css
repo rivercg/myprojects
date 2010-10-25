@@ -1,0 +1,48 @@
+td.title {
+  background: #E1E1E1 url(../../media/img/admin/nav-bg.gif) repeat-x 0% 0%;
+  border-bottom: 1px solid #DDD;
+  border-left: 1px;
+  color: #666;
+  font-size: 11px;
+  padding: 2px 5px;
+  font-weight: bold;
+  text-align: left !important;
+}
+
+.change-list .filtered table.aligned {
+	width: 80% !important;
+	margin-bottom: 15px;
+}
+
+#message_list h2.aligned {
+	width: 80% !important;
+}
+
+tr.blank {
+	height: 15px;
+}
+
+tr.bordertop td {
+  border-top: 1px solid #DDD;
+}
+
+div.form-row {
+  border-right: 1px solid #DDD;
+}
+
+form.aligned {
+	width: 80% !important;
+}
+
+form div input.vTextField {
+	width: 80%;
+}
+
+div#message_list.aligned {
+	width: 80% !important;
+}
+
+div#message_list.aligned  p{
+	margin-right: 0px !important;
+	margin-bottom: 10px !important;
+}

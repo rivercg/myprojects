@@ -3,49 +3,51 @@
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-     <a href="../../">{% trans "Home" %}</a> &rsaquo;
-     <a href="../">{% trans "jobs" %}</a> &rsaquo;
-     {{ title }}
+  <a href="../../">{% trans "Home" %}</a> &rsaquo;
+  <a href="../">{% trans "Job positions" %}</a> &rsaquo;
+  {{ title }}
 </div>
 {% endblock %}
 
 {% block content %}
-<table>
-	<tbody>
-    <tr>
-    	<td>职位</td>
-    	<td>{{ pos.title }} </td>
-    </tr>
-    <tr>
-    	<td>发布日期</td>
-    	<td>{{ pos.pub_date }} </td>
-    </tr>
-    <tr>
-    	<td>部门</td>
-    	<td>{{ pos.department }} </td>
-    </tr>
-    <tr>
-    	<td>职责</td>
-    	<td>{{ pos.responsibility }} </td>
-    </tr>
-    <tr>
-    	<td>要求</td>
-    	<td>{{ pos.requirement }} </td>
-    </tr>
-    <tr>
-    	<td>优先考虑</td>
-    	<td>{{ pos.preference }} </td>
-    </tr>
-    <tr>
-    	<td>是否已关闭</td>
-    	<td>{{ pos.closed }} </td>
-    </tr>
-    {% if pos.closed %}<p><strong>{{ error_message }}</strong></p>
-    <tr>
-    	<td>关闭日期</td>
-    	<td>{{ pos.close_date }} </td>
-    </tr>
-    {% endif %}
-  </tbody>
-</table>
+<div id="content-main">
+  <table>
+    <tbody>
+      <tr>
+        <td>职位</td>
+        <td>{{ pos.title }} </td>
+      </tr>
+      <tr>
+        <td>发布日期</td>
+        <td>{{ pos.pub_date }} </td>
+      </tr>
+      <tr>
+        <td>部门</td>
+        <td>{{ pos.department }} </td>
+      </tr>
+      <tr>
+        <td>职责</td>
+        <td>{{ pos.responsibility }} </td>
+      </tr>
+      <tr>
+        <td>要求</td>
+        <td>{{ pos.requirement }} </td>
+      </tr>
+      <tr>
+        <td>优先考虑</td>
+        <td>{{ pos.preference }} </td>
+      </tr>
+      <tr>
+        <td>是否已关闭</td>
+        <td>{{ pos.closed }} </td>
+      </tr>
+      {% if pos.closed %}<p><strong>{{ error_message }}</strong></p>
+      <tr>
+        <td>关闭日期</td>
+        <td>{{ pos.close_date }} </td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% load adminmedia admin_list i18n %}
+
+<div id="closed_list">
+{% if closed_record_list %}
+  <table cellspacing="0" id="result_list" summary="Closed records">
+  <caption><a href="closed" class="section">{% blocktrans with "Closed records" as name %}{{ name }}{% endblocktrans %}</a></caption>
+    <thead>
+      <tr>
+      	<th></th>
+        <th>{% trans 'Candidate' %}</th>
+        <th>{% trans 'Department' %}</th>
+        <th>{% trans 'Position' %}</th>
+        <th>{% trans 'Date Closed' %}</th>
+        <th>{% trans 'Comment' %}</th>
+        <th>{% trans 'Trac days' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in closed_record_list %}
+        <tr>
+        	<td><a href="{{ r.pk }}/change" class="changelink"></td>
+          <td><a href="{{ r.pk }}"> {{ r.candidate }}</a></td>
+          <td>{{ r.position.department }}</td>
+          {% url jobs-root as jobs_root_url %}
+          <td><a href="{{ jobs_root_url }}{{ r.position.pk }}">{{ r.position }}</a></td>
+          <td>{{ r.close_date }}</td>
+          <td>{{ r.text }}</td>
+          <td>{{ r.trac_days }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="paginator">{{ closed_record_list.count }} closed records</p>
+{% else %}
+  <p class="paginator">No closed records are available</p>
+{% endif %}
+</div>

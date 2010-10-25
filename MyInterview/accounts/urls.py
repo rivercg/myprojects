@@ -14,4 +14,5 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('accounts.views',
     (r'^$', 'index'),
+    (r'^users$', 'users')
 )

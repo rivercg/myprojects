@@ -1,24 +1,23 @@
 {% extends "base_site.html" %}
-{% load i18n %}
+{% load adminmedia admin_list i18n %}
 
 {% block breadcrumbs %}
 <div class="breadcrumbs">
-     <a href="/">{% trans "Home" %}</a> &rsaquo;
-     {{ fea_desc }}
+  <a href="/">{% trans "Home" %}</a> &rsaquo;
+  {{ fea_desc }}
 </div>
 {% endblock %}
 
+{% block content_title %}{% endblock %}
+
 {% block content %}
-<h1> </h1>
-
-<p>Dear {{ candidate.first_name }}:</p>
-
-<p>Netis intruduction</p>
-
-<p>Welcome to the apply the <a href={{ pos_url }}>{{ pos.title }}</a> position.</p>
-
-<div>If you are still interested in this position, please <a href={{ ack_true }}>confirm yes</a>. Then our HR will contact you some later.</div>
-<div>If you won't apply this position, please <a href={{ ack_false }}>confirm no</a>.</div>
+<div id="content-main">
+  <p>Dear {{ candidate.first_name }}:</p>
+  <p>Netis intruduction</p>
+  <p>Welcome to the apply the <a href={{ pos_url }}>{{ pos.title }}</a> position.</p>
+  <p>If you are still interested in this position, please <a href={{ ack_true }}>confirm yes</a>. Then our HR will contact you some later.</p>
+  <p>If you won't apply this position, please <a href={{ ack_false }}>confirm no</a>.</p>
+</div>
 {% endblock %}
 
 

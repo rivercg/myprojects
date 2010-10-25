@@ -1,0 +1,31 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+{% if latest_users_list %}
+  <table>
+    <tbody>
+      <tr>
+        <th>{% trans 'user' %}</th>
+        <th>{% trans 'rols' %}</th>
+        <th>{% trans 'email' %}</th>
+        <th>{% trans 'last login' %}</th>
+      </tr>
+      {% for u in latest_users_list %}
+      <tr>
+        <td>{{ u.user_name }}</td>
+        <td>{{ u.get_role_display }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.last_login }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No users are available.</p>
+{% endif %}
+</div>
+{% endblock %}

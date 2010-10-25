@@ -3,13 +3,14 @@ from models import IvRecord, Message
 
 class IvRecordAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['position', 'candidate']}),
-        ('Status information',  {'fields': ['status']}),
+        (None, {'fields': ['position', 'candidate']}),
+        ('Status information', {'fields': ['status', 'text', 'iv_date']}),
+        ('Users information', {'fields': ['creator', 'follower', 'watcher_list']}),
         ('Date information', {'fields': ['open_date', 'close_date'], 'classes': ['collapse']}),
     ]
-    list_display = ('pk', 'position', 'candidate', 'status', 'open_date', 'close_date')
-    list_filter = ['position', 'status', 'open_date', 'close_date']
-    search_fields = ['position', 'candidate', 'status']
+    list_display = ('pk', 'position', 'candidate', 'status', 'text', 'iv_date', 'follower', 'open_date', 'creator', 'close_date')
+    list_filter = ['position', 'status', 'creator', 'follower', 'iv_date', 'open_date', 'close_date']
+    search_fields = ['position', 'candidate', 'status', 'text', 'creator', 'follower', 'watcher_list']
     date_hierarchy = 'open_date'
 
 class MessageAdmin(admin.ModelAdmin):

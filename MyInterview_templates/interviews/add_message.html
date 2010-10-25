@@ -1,0 +1,16 @@
+{% load i18n iv_result %}
+<form class="aligned" id="addmessage-form" action="../message/add" method="post" enctype="multipart/form-data">{% csrf_token %}
+  <h2 class="aligned">New message</h2>
+	<div class="hiddenfields">
+		<input type='hidden' name="iv_record"	value="{{ iv_record.pk }}" />
+	</div>
+	<div class="form-row">
+    <label for="id_text" class="required">Message</label>
+    <input name="text" value="" class="vTextField" maxlength="500" type="text" id="id_text">
+  </div>
+	<div class="form-row">
+		<label>Option</label>
+		<input name="iscomment" value="False" class="vBooleanField" type="checkbox" id="id_iscomment"> Update record comment
+  </div>
+  {% submit_row %}
+</form>

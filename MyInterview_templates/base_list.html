@@ -1,0 +1,63 @@
+{% extends "base_site.html" %}
+{% load adminmedia admin_list i18n %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/changelists.css" />
+  <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/dashboard.css" />
+  <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />
+  {% url site-media-root as site_media_root_url %}
+  <link rel="stylesheet" type="text/css" href="{{ site_media_root_url }}css/extended.css" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    {% url admin:jsi18n as jsi18nurl %}
+    <script type="text/javascript" src="{{ jsi18nurl|default:'../../jsi18n/' }}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+  <style>
+    #changelist table thead th:first-child {width: inherit}
+  </style>
+  {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media.js }}
+{% if action_form %}{% if actions_on_top or actions_on_bottom %}
+<script type="text/javascript">
+(function($) {
+   $(document).ready(function($) {
+      $("tr input.action-select").actions();
+   });
+})(django.jQuery);
+</script>
+{% endif %}{% endif %}
+{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../">{% trans "Home" %}</a> &rsaquo;
+      {{ title|capfirst }}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block content %}
+{% include "error_message.html" %}
+<div id="content-main">
+  {% block object-tools %}{% endblock %}
+
+  <div class="module filtered" id="changelist">
+    {% block filters %} {% endblock %}
+    {% block content-list %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

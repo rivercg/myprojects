@@ -1,0 +1,71 @@
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">{% trans "Home" %}</a> &rsaquo;
+      <a href="../">{% trans "Interview records" %}</a> &rsaquo;
+      {{ title|capfirst }}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block filters %}
+  <div id="changelist-filter">
+    <h2>{% trans 'Filter' %}</h2>
+    <p>will put filter here</p>
+  </div>
+{% endblock %}
+
+{% block content-list %}
+<div id="long_list">
+{% if record_list %}
+  <table cellspacing="0" id="result_list" summary={{ title }}>
+  <caption>{{ title }}</caption>
+    <thead>
+      <tr>
+      	<th></th>
+        <th>{% trans 'Candidate' %}</th>
+        <th>{% trans 'Department' %}</th>
+        <th>{% trans 'Position' %}</th>
+        <th>{% trans 'Status' %}</th>
+        <th>{% trans 'Comment' %}</th>
+        <th>{% trans 'Trac days' %}</th>
+        <th>{% trans 'Interview date' %}</th>
+        <th>{% trans 'Date opened' %}</th>
+        {% if is_close %}
+          <th>{% trans 'Date Closed' %}</th>
+        {% endif %}
+        <th>{% trans 'Creator' %}</th>
+        <th>{% trans 'Follower' %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in record_list %}
+        <tr>
+        	<td><a href="../{{ r.pk }}/change" class="changelink"></td>
+          <td><a href="../{{ r.pk }}"> {{ r.candidate }}</a></td>
+          <td>{{ r.position.department }}</td>
+          {% url jobs-root as jobs_root_url %}
+          <td><a href="{{ jobs_root_url }}{{ r.position.pk }}">{{ r.position }}</a></td>
+          <td>{{ r.get_status_display }}</td>
+          <td>{{ r.text }}</td>
+          <td>{{ r.trac_days }}</td>
+          <td>{{ r.open_date }}</td>
+          {% if is_close %}
+            <td>{{ r.close_date }}</td>
+          {% endif %}
+          <td>{{ r.iv_date }}</td>
+          <td>{{ r.creator }}</td>
+          <td>{{ r.follower }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="paginator">{{ record_list.count }} {{ title|lower }}</p>
+{% else %}
+  <p class="paginator">No records are available</p>
+{% endif %}
+</div>
+{% endblock %}

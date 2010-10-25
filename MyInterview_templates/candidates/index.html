@@ -2,13 +2,15 @@
 {% load i18n %}
 
 {% block content %}
+<div id="content-main">
 {% if latest_candidate_list %}
-    <ul>
-    {% for c in latest_candidate_list %}
-        <li><a href="/candidates/{{ c.id }}/">{{ c.name }}</a></li>
-    {% endfor %}
-    </ul>
+  <ul>
+  {% for c in latest_candidate_list %}
+    <li><a href="/candidates/{{ c.id }}/">{{ c.name }}</a></li>
+  {% endfor %}
+  </ul>
 {% else %}
-    <p>No candidates are available.</p>
+  <p>No candidates are available.</p>
 {% endif %}
+</div>
 {% endblock %}
