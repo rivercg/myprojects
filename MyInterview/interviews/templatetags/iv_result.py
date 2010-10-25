@@ -1,5 +1,6 @@
 from django.template import Library
 from interviews.models import Message
+from candidates.views import get_candidate_feature_list
 
 register = Library()
 
@@ -18,9 +19,6 @@ def message_list(user, iv_record):
 resume_list = register.inclusion_tag("interviews/message_list.html")(message_list)
     
 def submit_row(context):
-    """
-    Displays the row of buttons for delete and save. 
-    """
     opts = context['opts']
     change = context['change']
     is_popup = context['is_popup']
@@ -38,5 +36,15 @@ def submit_row(context):
         'show_save': True
     }
 submit_row = register.inclusion_tag('interviews/submit_line.html', takes_context=True)(submit_row)
+    
+def feature_list(user, iv_record, host):
+    c = iv_record.candidate
+    candidate_feature_list = get_candidate_feature_list(c)
+    return {'user': user,
+            'iv_record': iv_record,
+            'host': host,
+            'candidate_feature_list': candidate_feature_list,}
+feature_list = register.inclusion_tag("candidates/feature_list.html")(feature_list)
+
     
     

@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from models import IvRecord, Message
+from forms import *
 from django.template import RequestContext
 from django.contrib import messages
 import datetime
@@ -16,29 +17,37 @@ def index(request):
                               {'user': request.user, 'title': 'Interview records', 
                                'active_record_list': active_record_list,
                                'closed_record_list': closed_record_list,
-                               'has_add_permission': has_add_permission})
+                               'has_add_permission': has_add_permission,
+                               'has_filters': True,
+                               })
     
 @login_required
 def active_list(request):
     record_list = IvRecord.objects.exclude(status="Closed").order_by('-open_date')
     return render_to_response('interviews/long_list.html', 
                               {'user': request.user, 'title': 'Active records', 
-                               'record_list': record_list})
+                               'record_list': record_list,
+                               'has_filters': True,})
 @login_required
 def closed_list(request):
     record_list = IvRecord.objects.filter(status="Closed").order_by('-open_date')
     return render_to_response('interviews/long_list.html', 
                               {'user': request.user, 'title': 'Closed records', 'is_close': True,
-                               'record_list': record_list})
-
-@login_required
-def detail(request, iv_id):
+                               'record_list': record_list,
+                               'has_filters': True,
+                               })
+    
+def _init_context(request, iv_id, has_filters=True):
     has_close_permission = True
     has_reopen_permission = True
-    iv_record = IvRecord.objects.get(pk=iv_id)
+    if iv_id <> 0:
+        iv_record = IvRecord.objects.get(pk=iv_id)
+    else:
+        iv_record = None
     context = {'user': request.user, 
                'title': 'View record', 
-               'iv_record': iv_record,}
+               'iv_record': iv_record,
+               'has_filters': True,}
     context.update({ 
             'is_popup': False,
             'add': False,                                                                              
@@ -57,7 +66,14 @@ def detail(request, iv_id):
             #'root_path': self.admin_site.root_path,    
             'has_close_permission': has_close_permission,
             'has_reopen_permission': has_reopen_permission,
+            'host': request.get_host(),
+            'has_filters': has_filters,
             })     
+    return context
+
+@login_required
+def detail(request, iv_id):
+    context = _init_context(request, iv_id=iv_id, has_filters=True)
     return render_to_response('interviews/detail.html', context,
                                context_instance=RequestContext(request))
 
@@ -72,6 +88,8 @@ def operate(request, iv_id, action):
                                'change': True,
                                'is_popup': False,
                                'save_as': '',
+                               'host': request.get_host(),
+                               'has_filters': True,
                                },
                                context_instance=RequestContext(request))
 
@@ -106,7 +124,10 @@ def add_message(request):
 @csrf_protect
 @login_required
 def add_record(request):
-    return HttpResponse('add record')
+    form = NewInterviewForm()
+    context = _init_context(request, iv_id=0, has_filters=False)
+    context.update({'form': form})
+    return render_to_response('interviews/add_record.html', context, context_instance=RequestContext(request))
 
 @csrf_protect
 @login_required

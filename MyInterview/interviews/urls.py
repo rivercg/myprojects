@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('interviews.views',
+    url(r'^$', 'index', name='iv-redords-root'),
     (r'^$', 'index'),
     (r'^active/$', 'active_list'),
     (r'^closed/$', 'closed_list'),

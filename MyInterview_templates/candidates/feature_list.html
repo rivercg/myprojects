@@ -1,0 +1,44 @@
+{% load adminmedia admin_list i18n iv_result %}
+<div id="feature_list">
+{% if candidate_feature_list %}
+  <table class="aligned" id="resume_table" summary="resume of {{candidate.name}}">
+  <caption>Features</caption>
+    <thead>
+    	<tr>
+        <th>Feature</th>
+    	  <th>Status</th>
+    	  <th>Last modify</th>
+    	  <th>URL</th>
+    	  <th>Reset</th>
+    	  <th>Close</th>
+    	</tr>
+    </thead>
+    <tbody>
+      {% for f in candidate_feature_list %}
+        <tr>
+          <td class="title">{{ f.fea_desc }}</td>
+          <td>{{ f.status_desc }}</td>
+          <td>{{ f.mod_date }}</td>
+          <td><a href="{{ f.url}}">http://{{ host }}{{ f.url }}</a></td>
+          <td>
+          	{% if not f.is_waiting %}
+              <a href="{{ f.url_reset}}" class="addlink"></a>
+            {% else %}
+              n/a
+            {% endif %}
+          </td>
+          <td>
+          	{% if not f.is_closed %}
+            	<a href="{{ f.url_close}}" class="deletelink"></a>
+            {% else %}
+              n/a
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p class="paginator aligned">No features are available</p>
+{% endif %}
+</div>

@@ -65,7 +65,7 @@ class CandidateFeatureLink(models.Model):
         abstract = True 
         
     def feature_index(self):
-        return CANDIDATE_FEATURE_NA;
+        return CANDIDATE_FEATURE_NA
     
     def is_waiting(self):
         return self.status == 'W'
@@ -86,7 +86,7 @@ class CandidateFeatureLink(models.Model):
     def close_it(self):
         self.update_status('C')
         
-    def reopen_it(self):
+    def reset_it(self):
         self.update_status('W')
 
 class CandidateAckContactLink(CandidateFeatureLink):
@@ -94,21 +94,21 @@ class CandidateAckContactLink(CandidateFeatureLink):
         db_table = 'candidates_ackcontact_link'
 
     def feature_index(self):
-        return CANDIDATE_FEATURE_ACC;
+        return CANDIDATE_FEATURE_ACC
         
 class CandidateAckSchduleLink(CandidateFeatureLink):
     class Meta(CandidateFeatureLink.Meta):
         db_table = 'candidates_ackscedule_link'
 
     def feature_index(self):
-        return CANDIDATE_FEATURE_ASC;
+        return CANDIDATE_FEATURE_ASC
         
 class CandidateUpdateResumeLink(CandidateFeatureLink):
     class Meta(CandidateFeatureLink.Meta):
         db_table = 'candidates_updateresume_link'
 
     def feature_index(self):
-        return CANDIDATE_FEATURE_UR;
+        return CANDIDATE_FEATURE_UR
 
     def can_update_status(self, st):
         return (not self.is_closed()) and (st in ['', 'U'])
@@ -124,14 +124,23 @@ def random_digest(fea_class, len=CF_LINK_DIGEST_LEN):
 CANDIDATE_FEATURE_DEFNITIONS_NAMES = ('fea_index', 'fea_key', 'fea_desc', 'fea_class')               
                
 CANDIDATE_FEATURE_DEFNITIONS = (
-    (CANDIDATE_FEATURE_ACC, 'ACC', 'Acknowledge Contact Continue', CandidateAckContactLink),
-    (CANDIDATE_FEATURE_ASC, 'ASC', 'Acknowledge Schedule Continue', CandidateAckSchduleLink),
-    (CANDIDATE_FEATURE_UR, 'UR', 'Update Resume', CandidateUpdateResumeLink),
+    (CANDIDATE_FEATURE_ACC, 'ACC', 'Acknowledge contact continue', CandidateAckContactLink),
+    (CANDIDATE_FEATURE_ASC, 'ASC', 'Acknowledge schedule continue', CandidateAckSchduleLink),
+    (CANDIDATE_FEATURE_UR, 'UR', 'Update resume', CandidateUpdateResumeLink),
 )
  
 def get_feature_defset(feature_id):
     for defset in CANDIDATE_FEATURE_DEFNITIONS:
         if (defset[1] == feature_id):
+            d = {}
+            for i, key in enumerate(CANDIDATE_FEATURE_DEFNITIONS_NAMES):
+                d[key] = defset[i]
+            return d
+    raise FeatureDoesNotExist
+
+def get_feature_defset_byindex(feature_index):
+    for defset in CANDIDATE_FEATURE_DEFNITIONS:
+        if (defset[0] == feature_index):
             d = {}
             for i, key in enumerate(CANDIDATE_FEATURE_DEFNITIONS_NAMES):
                 d[key] = defset[i]

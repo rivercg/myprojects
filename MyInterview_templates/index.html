@@ -1,0 +1,31 @@
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      {% trans "Home" %}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block filters %}{% endblock %}
+
+{% block content-list %}
+<div id="index_list">
+	<ul>
+		<li>
+    	{% url iv-redords-root as iv_records_root_url %}
+  	  <a href={{ iv_records_root_url }}>Interview list</a>
+  	</li>
+		<li>
+      {% url candidates-root as candidates_root_url %}
+  	  <a href={{ candidates_root_url }}>Candidate lis</a>
+  	</li>
+		<li>
+      {% url jobs-root as jobs_root_url %}
+  	  <a href={{ jobs_root_url }}>Job list</a>
+		</li>
+  </ul>
+</div>
+{% endblock %}

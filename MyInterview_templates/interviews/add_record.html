@@ -1,0 +1,25 @@
+{% extends "base_list.html" %}
+{% load adminmedia admin_list i18n iv_result %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">{% trans "Home" %}</a> &rsaquo;
+      <a href="../">{% trans "Interview records" %}</a> &rsaquo;
+      {{ title|capfirst }}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block content-list %}
+  <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+    <fieldset>
+      <div>
+        <div>
+        {{ form.as_p }}
+        </div>
+      </div>
+    </fieldset>
+		{% submit_row %}
+  </form>
+{% endblock %}

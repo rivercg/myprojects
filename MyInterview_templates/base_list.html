@@ -51,11 +51,10 @@
 {% block coltype %}colMS{% endblock %}
 
 {% block content %}
-{% include "error_message.html" %}
 <div id="content-main">
   {% block object-tools %}{% endblock %}
 
-  <div class="module filtered" id="changelist">
+  <div class="module{% if has_filters %} filtered{% endif %}" id="changelist">
     {% block filters %} {% endblock %}
     {% block content-list %}{% endblock %}
   </div>
